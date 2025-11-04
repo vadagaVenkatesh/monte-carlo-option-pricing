@@ -1,9 +1,7 @@
 # Monte Carlo Option Pricing Engine
-
 A high-performance Python-based Monte Carlo simulation engine for pricing European and exotic options using advanced numerical methods and parallel processing.
 
 ## Overview
-
 This project implements a sophisticated Monte Carlo simulation framework for option pricing, leveraging geometric Brownian motion (GBM) and state-of-the-art variance reduction techniques to achieve accurate and efficient pricing of both standard and exotic derivatives.
 
 ## Key Features
@@ -43,27 +41,12 @@ This project implements a sophisticated Monte Carlo simulation framework for opt
 - Python 3.x
 - NumPy: Vectorized numerical computations
 - SciPy: Statistical functions and distributions
-- Multiprocessing: Parallel processing capabilities
-- Matplotlib: Visualization of results and convergence analysis
-- Pandas: Market data handling and analysis
-
-## Use Cases
-
-- **Derivatives Pricing**: Accurate valuation of standard and exotic options
-- **Risk Management**: Greeks calculation and sensitivity analysis
-- **Trading Strategy Backtesting**: Historical option pricing validation
-- **Quantitative Research**: Testing new pricing models and variance reduction techniques
-- **Educational Tool**: Understanding Monte Carlo methods in computational finance
-
-## Performance Metrics
-
-- **Simulation Paths**: Supports 1M+ paths with efficient memory management
-- **Speedup**: 10x performance improvement with parallel processing
-- **Accuracy**: <0.5% pricing error vs. Black-Scholes and market data
+- Multiprocessing: Parallel computing framework
+- Matplotlib: Visualization of convergence and price distributions
+- Pandas: Data handling and analysis
 - **Convergence**: Square-root convergence rate improvement with variance reduction
 
 ## Project Structure
-
 ```
 monte-carlo-option-pricing/
 ├── src/
@@ -84,38 +67,63 @@ monte-carlo-option-pricing/
 ## Getting Started
 
 ### Installation
-
 ```bash
 git clone https://github.com/vadagaVenkatesh/monte-carlo-option-pricing.git
 cd monte-carlo-option-pricing
 pip install -r requirements.txt
 ```
 
-### Quick Example
+## Example Usage
+
+The following example demonstrates how to use the Monte Carlo pricing engine with the project structure:
 
 ```python
-import numpy as np
+# Import from src/ modules
 from src.simulation import MonteCarloEngine
 from src.options import EuropeanOption
+from src.variance_reduction import AntitheticVariates, ControlVariates
+from src.parallel import ParallelPricer
 
-# Initialize pricing engine
+# Define option parameters
+S0 = 100          # Initial stock price
+K = 105           # Strike price
+T = 1.0           # Time to maturity (years)
+r = 0.05          # Risk-free rate
+sigma = 0.2       # Volatility
+n_simulations = 1000000
+
+# Initialize Monte Carlo simulation engine
 engine = MonteCarloEngine(
-    S0=100,           # Initial stock price
-    K=105,            # Strike price
-    T=1.0,            # Time to maturity (years)
-    r=0.05,           # Risk-free rate
-    sigma=0.2,        # Volatility
-    n_simulations=1000000,
-    variance_reduction='antithetic'
+    S0=S0,
+    T=T,
+    r=r,
+    sigma=sigma,
+    n_simulations=n_simulations
 )
 
-# Price European call option
-call_price = engine.price_european_call()
-print(f"Call Option Price: ${call_price:.2f}")
+# Create European call option
+call_option = EuropeanOption(
+    strike=K,
+    option_type='call',
+    maturity=T
+)
+
+# Price with variance reduction
+antithetic = AntitheticVariates(engine)
+call_price = call_option.price(antithetic)
+
+print(f"European Call Option Price: ${call_price:.2f}")
+
+# Price with parallel processing for large simulations
+parallel_pricer = ParallelPricer(n_cores=4)
+parallel_price = parallel_pricer.price(engine, call_option)
+
+print(f"Parallel Computed Price: ${parallel_price:.2f}")
 ```
 
-## Future Enhancements
+For more detailed examples, see the `examples/example_usage.py` file.
 
+## Future Enhancements
 - GPU acceleration using CuPy or Numba CUDA
 - Additional exotic option types (American, Bermudan)
 - Jump-diffusion and stochastic volatility models
@@ -123,15 +131,12 @@ print(f"Call Option Price: ${call_price:.2f}")
 - Real-time market data integration
 
 ## License
-
 MIT License
 
 ## Author
-
 Venkatesh Vadaga
 
 ## References
-
 - Black, F., & Scholes, M. (1973). The Pricing of Options and Corporate Liabilities
 - Glasserman, P. (2003). Monte Carlo Methods in Financial Engineering
 - Hull, J. C. (2018). Options, Futures, and Other Derivatives
