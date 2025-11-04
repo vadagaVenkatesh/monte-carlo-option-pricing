@@ -1,0 +1,32 @@
+# Monte Carlo Option Pricing - Requirements
+# Core dependencies
+numpy>=1.21.0
+scipy>=1.7.0
+
+# Parallel computing
+multiprocessing-logging>=0.3.0
+
+# GPU acceleration (optional)
+# cupy>=9.0.0
+
+# Testing
+pytest>=6.2.0
+pytest-cov>=2.12.0
+
+# Documentation
+sphinx>=4.0.0
+sphinx-rtd-theme>=0.5.0
+
+# Development
+black>=21.0
+flake8>=3.9.0
+mypy>=0.900
+
+# Benchmarking
+matplotlib>=3.4.0
+pandas>=1.3.0
+seaborn>=0.11.0
+
+# Financial libraries (optional)
+# yfinance>=0.1.63
+# quantlib>=1.22
