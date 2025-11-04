@@ -61,8 +61,7 @@ monte-carlo-option-pricing/
 - Jump-diffusion and stochastic volatility models
 - Greeks calculation with automatic differentiation
 - Real-time market data integration
-## License
-MIT License
+
 ## Author
 Venkatesh Vadaga
 ## References
